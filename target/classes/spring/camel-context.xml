@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <endpoint id="sampleTrans" uri="dozer:sampleTrans?sourceModel=samplesource.SampleSource&amp;targetModel=sampletarget.SampleTarget&amp;marshalId=transform-json&amp;unmarshalId=samplesourceSampleSource&amp;mappingFile=transformation.xml"/>
+        <dataFormats>
+            <json id="samplesourceSampleSource" library="Jackson" unmarshalTypeName="samplesource.SampleSource"/>
+            <json id="transform-json" library="Jackson"/>
+        </dataFormats>
+        <route id="simple-route">
+            <from id="route-timer" uri="timer://foo?period=5000"/>
+            <setBody id="route-setBody">
+                <simple>{
+	"key1": "value1",
+	"key2": "value2"
+}</simple>
+            </setBody>
+            <to id="first route" pattern="InOnly" uri="direct:firstFuseRoute">
+                <description>This is just a simple route</description>
+            </to>
+            <log id="route-log" message=">>> ${body}"/>
+        </route>
+        <route id="first-route">
+            <from id="fuseroute" uri="direct:firstFuseRoute"/>
+            <log id="firstFuseRouteBody" message="Received following message ${body}"/>
+            <convertBodyTo charset="UTF-8" id="_convertBodyTo1" type="java.lang.String"/>
+            <to id="_to1" uri="ref:sampleTrans"/>
+            <log id="_log1" message="converted body ${body}"/>
+        </route>
+    </camelContext>
+</beans>

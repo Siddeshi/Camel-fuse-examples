@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping https://dozermapper.github.io/schema/bean-mapping.xsd">
+    <configuration>
+        <wildcard>false</wildcard>
+    </configuration>
+    <mapping>
+        <class-a>samplesource.SampleSource</class-a>
+        <class-b>sampletarget.SampleTarget</class-b>
+        <field>
+            <a>key1</a>
+            <b>header.hdrk2</b>
+        </field>
+        <field>
+            <a>key2</a>
+            <b>header.hdrk1</b>
+        </field>
+    </mapping>
+</mappings>
